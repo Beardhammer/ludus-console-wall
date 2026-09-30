@@ -1,0 +1,11 @@
+# Ludus Console Wall
+
+Standalone, GUI-uploadable RPC-v2 plugin. Upload `dist-rpc/ludus-console-wall-1.2.0.zip` through **Resources → Plugins** and have an administrator activate it. It does not modify Ludus source or install guest agents. This package uses plugin ID `console-wall-v120`; Ludus retains prior plugin IDs after removal.
+
+The **Range** dropdown lists each accessible range by name and ID, plus **All accessible ranges**. It initially selects the host's active range when available; users can pick another without changing the host's range selector. Directly assigned ranges and ranges granted through group membership are included. Administrators can see all ranges. Each tile is labeled with its range, machine, IP, power state, and console source. The backend validates range access on inventory, screenshots, and every interactive request; an untrusted VMID or session ID cannot select a machine outside the user's permitted ranges.
+
+Tiles remain view-only. Click a powered-on machine to focus it, then uncheck **View only** to open a persistent interactive RFB session. Proxmox machines use the authenticated user's Proxmox VNC proxy and `VM.Console` permission. Kali/Kasm machines use the standard Ludus Kali template's authenticated KasmVNC viewer on port 8444. The focused view supports held keys and modifiers, mouse drag, right click, scroll, text entry, and shortcut buttons. Closing the view or rechecking **View only** closes the session and releases held input. Sessions also expire after two idle minutes; at most six can be open in the plugin process.
+
+The Ludus GUI sandbox does not expose a browser WebSocket to plugins. Console Wall keeps the VNC/KasmVNC connection on the server and transports frames and input through the existing authenticated plugin bridge, polling the focused frame roughly every 700 ms. This is an interactive desktop, but it does not provide native noVNC/Kasm audio or clipboard synchronization. Wall thumbnails continue to use short-lived screenshots; Kasm's HTTP 400 empty-frame case falls back to an authenticated viewer capture.
+
+Build with `sh source/tools/build-package.sh /path/to/ludus ./dist-rpc` from this directory. The build runs Go tests and produces a Linux AMD64 executable in the ZIP.

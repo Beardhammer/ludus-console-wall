@@ -1,0 +1,16 @@
+
+# Local dependencies, generated packages, and test output
+node_modules/
+/dist/
+/dist-rpc/
+.pnpm-store/
+test-results/
+playwright-report/
+__pycache__/
+*.pyc
+.DS_Store
+
+# Local credentials and environment settings
+.env
+.env.*
+!.env.example
